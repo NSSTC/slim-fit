@@ -1,0 +1,8 @@
+{
+  "name": "slim-fit",
+  "version": "0.1.0",
+  "license": "MPL 2.0",
+  "repository": "https://github.com/NSSTC/slim-fit.git",
+  "main": "src/slim-fit.ts",
+  "keywords": ["webcomponent", "component", "shadowdom", "html"]
+}
