@@ -50,9 +50,9 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         }));
     }
 
-    protected abstract render() { /* overwrite me */ }
+    protected abstract render()
 
-    abstract static get observedAttributes(): string[] { return []; /* overwrite me */ }
+    abstract static get observedAttributes(): string[]
 
     static registerTag(tagName: string) {
         if (customElements.get(tagName)) return;
