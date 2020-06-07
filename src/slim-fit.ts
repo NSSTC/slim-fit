@@ -80,6 +80,3 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         return this.root.querySelectorAll<T>(query);
     }
 }
-
-
-SlimFit.registerTag('');
