@@ -50,14 +50,16 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         }));
     }
 
-    protected abstract render()
+    protected abstract render(): Promise<void>
 
-    abstract static get observedAttributes(): string[]
+    static get observedAttributes(): string[] {
+        return [];
+    }
 
     static registerTag(tagName: string) {
         if (customElements.get(tagName)) return;
 
-        customElements.define(tagName, this);
+        customElements.define(tagName, this as unknown as CustomElementConstructor);
     }
 
     async tryRender() {
@@ -78,3 +80,6 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         return this.root.querySelectorAll<T>(query);
     }
 }
+
+
+SlimFit.registerTag('');
