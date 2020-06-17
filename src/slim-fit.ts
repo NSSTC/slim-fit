@@ -7,7 +7,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
     protected dirty: boolean = true;
     protected root: ShadowRoot;
 
-    constructor(hideInternals: boolean = true) {
+    constructor(hideInternals: boolean = false) {
         super();
 
         this.root = this.attachShadow({ mode: hideInternals ? 'closed' : 'open' });
