@@ -4,5 +4,10 @@
   "license": "MPL 2.0",
   "repository": "https://github.com/NSSTC/slim-fit.git",
   "main": "src/slim-fit.ts",
-  "keywords": ["webcomponent", "component", "shadowdom", "html"]
+  "keywords": [
+    "webcomponent",
+    "component",
+    "shadowdom",
+    "html"
+  ]
 }

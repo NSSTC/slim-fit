@@ -4,7 +4,8 @@ export * from "./slim-fit.spec";
 
 
 export abstract class SlimFit extends HTMLElement implements ISlimFit {
-    protected dirty: boolean = true;
+    protected dirty = true;
+    private isRendering = false;
     protected root: ShadowRoot;
 
     constructor(hideInternals: boolean = false) {
@@ -34,9 +35,11 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         this.tryRender().catch(err => this.fireError(err));
     }
 
-    protected draw(html: string = '', css: string = '') {
+    protected draw(html: string | Element | Node | DocumentFragment = '', css: string = '') {
         const styleEle = document.createElement('style');
-        const contentFragment = document.createRange().createContextualFragment(html);
+        const contentFragment = typeof html == 'string'
+            ? document.createRange().createContextualFragment(html)
+            : html;
 
         styleEle.innerHTML = css;
         this.root.appendChild(styleEle);
@@ -45,15 +48,10 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
 
     protected fireError(error: Error) {
         this.dispatchEvent(new ErrorEvent('error', {
+            bubbles: true,
             error,
             message: error.message,
         }));
-    }
-
-    protected abstract render(): Promise<void>
-
-    static get observedAttributes(): string[] {
-        return [];
     }
 
     static registerTag(tagName: string) {
@@ -62,12 +60,22 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         customElements.define(tagName, this as unknown as CustomElementConstructor);
     }
 
+    protected abstract render(): Promise<void> | void
+
     async tryRender() {
-        if (this.dirty) {
-            this.clear();
-            await this.render();
-            this.dirty = false;
+        if (!this.dirty) return;
+
+        if (this.isRendering) {
+            return new Promise<void>((res, rej) =>
+                setTimeout(() => this.tryRender().catch(rej).then(res))
+            );
         }
+
+        this.isRendering = true;
+        this.clear();
+        await this.render();
+        this.dirty = false;
+        this.isRendering = false;
     }
 
     $<T extends Element>(query: string): T | null { return this.queryInternalElement(query) }
