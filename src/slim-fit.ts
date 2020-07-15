@@ -62,12 +62,12 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
 
     protected abstract render(): Promise<void> | void
 
-    async tryRender() {
-        if (!this.dirty) return;
+    async tryRender(enforce: boolean = false) {
+        if (!this.dirty && !enforce) return;
 
         if (this.isRendering) {
             return new Promise<void>((res, rej) =>
-                setTimeout(() => this.tryRender().catch(rej).then(res))
+                setTimeout(() => this.tryRender(true).catch(rej).then(res))
             );
         }
 
