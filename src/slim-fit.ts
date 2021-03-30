@@ -39,7 +39,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
     }
 
     /// overwrite if needed
-    protected async cleanup() {}
+    protected cleanup(): Promise<void> | void {}
 
     async clear() {
         await this.cleanup();
