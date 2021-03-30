@@ -1,4 +1,4 @@
-import {ISlimFit} from "./slim-fit.spec";
+import {ERenderPoint, ISlimFit, ISlimFitConstructorOptions, ISlimFitOptions} from "./slim-fit.spec";
 
 export * from "./slim-fit.spec";
 
@@ -6,33 +6,56 @@ export * from "./slim-fit.spec";
 export abstract class SlimFit extends HTMLElement implements ISlimFit {
     protected dirty = true;
     private isRendering = false;
+    protected options: ISlimFitOptions
     protected root: ShadowRoot;
 
-    constructor(hideInternals: boolean = false) {
+    constructor(options: ISlimFitConstructorOptions = {}) {
         super();
 
-        this.root = this.attachShadow({ mode: hideInternals ? 'closed' : 'open' });
+        this.options = Object.assign({
+            hideInternals: false,
+            renderPoint: ERenderPoint.Connected,
+        }, options);
 
-        const observer = new MutationObserver(() => {
-            this.dirty = true;
-            this.tryRender().catch(err => this.fireError(err));
-        });
+        this.root = this.attachShadow({ mode: this.options.hideInternals ? 'closed' : 'open' });
+
+        const observer = new MutationObserver(() => this.rerender());
 
         observer.observe(this, {
-            attributes: true,
+            attributes: false,
             childList: true,
             subtree: true,
         });
     }
 
-    clear() {
+    adoptedCallback() {
+        if (this.options.renderPoint == ERenderPoint.Adopted) {
+            this.tryRender().catch(err => this.fireError(err));
+        }
+    }
+
+    attributeChangedCallback() {
+        this.rerender();
+    }
+
+    /// overwrite if needed
+    protected async cleanup() {}
+
+    async clear() {
+        await this.cleanup();
         while (this.root.firstChild) {
             this.root.removeChild(this.root.firstChild);
         }
     }
 
     connectedCallback() {
-        this.tryRender().catch(err => this.fireError(err));
+        if (this.options.renderPoint == ERenderPoint.Connected) {
+            this.tryRender().catch(err => this.fireError(err));
+        }
+    }
+
+    disconnectedCallback() {
+        this.cleanup();
     }
 
     protected draw(html: string | Element | Node | DocumentFragment = '', css: string = '') {
@@ -62,6 +85,11 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
 
     protected abstract render(): Promise<void> | void
 
+    private rerender() {
+        this.dirty = true;
+        this.tryRender().catch(err => this.fireError(err));
+    }
+
     async tryRender(enforce: boolean = false) {
         if (!this.dirty && !enforce) return;
 
@@ -72,7 +100,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         }
 
         this.isRendering = true;
-        this.clear();
+        await this.clear();
         await this.render();
         this.dirty = false;
         this.isRendering = false;

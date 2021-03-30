@@ -1,3 +1,18 @@
+export enum ERenderPoint {
+    Adopted,
+    Connected,
+}
+
+export interface ISlimFitConstructorOptions {
+    hideInternals?: boolean
+    renderPoint?: ERenderPoint
+}
+
+export interface ISlimFitOptions extends ISlimFitConstructorOptions {
+    hideInternals: boolean
+    renderPoint: ERenderPoint
+}
+
 export interface ISlimFit {
     /**
      * Clear all internal elements
