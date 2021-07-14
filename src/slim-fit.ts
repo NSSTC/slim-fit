@@ -28,6 +28,10 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         });
     }
 
+    get shadowRoot(): Readonly<ShadowRoot> {
+        return this.root;
+    }
+
     adoptedCallback() {
         if (this.options.renderPoint == ERenderPoint.Adopted) {
             this.tryRender().catch(err => this.fireError(err));

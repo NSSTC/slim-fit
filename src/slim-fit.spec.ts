@@ -14,6 +14,8 @@ export interface ISlimFitOptions extends ISlimFitConstructorOptions {
 }
 
 export interface ISlimFit {
+    readonly shadowRoot: Readonly<ShadowRoot>
+
     /**
      * Clear all internal elements
      */
