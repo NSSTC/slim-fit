@@ -1,9 +1,9 @@
 {
-  "name": "slim-fit",
-  "version": "0.1.0",
+  "name": "@maruru/slim-fit",
+  "version": "0.2.0",
   "license": "MPL 2.0",
   "repository": "https://github.com/NSSTC/slim-fit.git",
-  "main": "src/slim-fit.ts",
+  "main": "src/index.ts",
   "keywords": [
     "webcomponent",
     "component",

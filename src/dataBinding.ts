@@ -1,45 +1,89 @@
 import {IObservable, Observable} from "./observable";
 
-export function bidiFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLElement, eventName: E): IObservable {
+export function bidiFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLElement, eventName: E, fieldName: string): IObservable {
     const observable = new Observable();
-    let targetField: keyof HTMLElement = 'value' as keyof HTMLElement;
+    let targetField = 'value';
 
-    if (target.tagName.toLowerCase() != 'input') {
+    if (fieldName) {
+        targetField = fieldName;
+    } else if (![
+        'button',
+        'data',
+        'input',
+        'li',
+        'meter',
+        'option',
+        'output',
+        'param',
+        'progress',
+        'select',
+        'textarea',
+    ].includes(target.tagName.toLowerCase())) {
         targetField = 'innerText';
     }
 
     target.addEventListener(eventName, () => {
+        // @ts-ignore we have a fallback in place
         observable.value = target[targetField]?.toString() ?? '';
     });
 
     observable.subscribe(newValue => {
-        // @ts-ignore both above fields are writable
+        // @ts-ignore user's problem
         target[targetField] = newValue;
     });
 
     return observable;
 }
 
-export function readFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLElement, eventName: E): IObservable {
+export function readFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLElement, eventName: E, fieldName: string): IObservable {
     const observable = new Observable();
-    let targetField: keyof HTMLElement = 'value' as keyof HTMLElement;
+    let targetField = 'value';
 
-    if (target.tagName.toLowerCase() != 'input') {
+    if (fieldName) {
+        targetField = fieldName;
+    } else if (![
+        'button',
+        'data',
+        'input',
+        'li',
+        'meter',
+        'option',
+        'output',
+        'param',
+        'progress',
+        'select',
+        'textarea',
+    ].includes(target.tagName.toLowerCase())) {
         targetField = 'innerText';
     }
 
     target.addEventListener(eventName, () => {
+        // @ts-ignore we have a fallback in place
         observable.value = target[targetField]?.toString() ?? '';
     });
 
     return observable;
 }
 
-export function writeToElement<E extends keyof HTMLElementEventMap>(target: HTMLElement): IObservable {
+export function writeToElement<E extends keyof HTMLElementEventMap>(target: HTMLElement, fieldName: string): IObservable {
     const observable = new Observable();
-    let targetField: keyof HTMLElement = 'value' as keyof HTMLElement;
+    let targetField = 'value';
 
-    if (target.tagName.toLowerCase() != 'input') {
+    if (fieldName) {
+        targetField = fieldName;
+    } else if (![
+        'button',
+        'data',
+        'input',
+        'li',
+        'meter',
+        'option',
+        'output',
+        'param',
+        'progress',
+        'select',
+        'textarea',
+    ].includes(target.tagName.toLowerCase())) {
         targetField = 'innerText';
     }
 
