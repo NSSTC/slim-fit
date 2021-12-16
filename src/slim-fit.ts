@@ -32,37 +32,37 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         return this.root;
     }
 
-    adoptedCallback() {
+    adoptedCallback(): void {
         if (this.options.renderPoint == ERenderPoint.Adopted) {
             this.tryRender().catch(err => this.fireError(err));
         }
     }
 
-    attributeChangedCallback() {
+    attributeChangedCallback(): void {
         this.rerender();
     }
 
     /// overwrite if needed
     protected cleanup(): Promise<void> | void {}
 
-    async clear() {
+    async clear(): Promise<void> {
         await this.cleanup();
         while (this.root.firstChild) {
             this.root.removeChild(this.root.firstChild);
         }
     }
 
-    connectedCallback() {
+    connectedCallback(): void {
         if (this.options.renderPoint == ERenderPoint.Connected) {
-            this.tryRender().catch(err => this.fireError(err));
+            this.tryRender().catch(err => this.fireError(err as Error));
         }
     }
 
-    disconnectedCallback() {
+    disconnectedCallback(): void {
         this.cleanup();
     }
 
-    protected draw(html: string | Element | Node | DocumentFragment = '', css: string = '') {
+    protected draw(html: string | Element | Node | DocumentFragment = '', css: string = ''): void {
         const styleEle = document.createElement('style');
         const contentFragment = typeof html == 'string'
             ? document.createRange().createContextualFragment(html)
@@ -73,7 +73,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         this.root.appendChild(contentFragment);
     }
 
-    protected fireError(error: Error) {
+    protected fireError(error: Error): void {
         this.dispatchEvent(new ErrorEvent('error', {
             bubbles: true,
             error,
@@ -81,7 +81,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         }));
     }
 
-    static registerTag(tagName: string) {
+    static registerTag(tagName: string): void {
         if (customElements.get(tagName)) return;
 
         customElements.define(tagName, this as unknown as CustomElementConstructor);
@@ -89,12 +89,12 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
 
     protected abstract render(): Promise<void> | void
 
-    private rerender() {
+    private rerender(): void {
         this.dirty = true;
-        this.tryRender().catch(err => this.fireError(err));
+        this.tryRender().catch(err => this.fireError(err as Error));
     }
 
-    async tryRender(enforce: boolean = false) {
+    async tryRender(enforce: boolean = false): Promise<void> {
         if (!this.dirty && !enforce) return;
 
         if (this.isRendering) {

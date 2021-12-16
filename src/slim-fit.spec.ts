@@ -19,7 +19,7 @@ export interface ISlimFit {
     /**
      * Clear all internal elements
      */
-    clear(): void
+    clear(): Promise<void>
 
     /**
      * Render the component, if it needs to

@@ -4,6 +4,9 @@
   "license": "MPL 2.0",
   "repository": "https://github.com/NSSTC/slim-fit.git",
   "main": "src/index.ts",
+  "devDependencies": {
+    "typescript": "^4.5.2"
+  },
   "keywords": [
     "webcomponent",
     "component",
