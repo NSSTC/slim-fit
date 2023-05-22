@@ -1,4 +1,5 @@
-import {ERenderPoint, ISlimFit, ISlimFitConstructorOptions, ISlimFitOptions} from "./slim-fit.spec";
+import type {ISlimFit, ISlimFitConstructorOptions, ISlimFitOptions} from "./slim-fit.spec";
+import {ERenderPoint} from "./slim-fit.spec";
 
 export * from "./slim-fit.spec";
 

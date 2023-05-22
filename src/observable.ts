@@ -1,4 +1,4 @@
-import {TListener} from "./oberservable.spec";
+import type {TListener} from "./oberservable.spec";
 
 export * from "./oberservable.spec";
 

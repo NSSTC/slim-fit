@@ -1,4 +1,4 @@
-import {IObservable, Observable} from "./observable";
+import {type IObservable, Observable} from "./observable";
 
 export function bidiFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLElement, eventName: E, fieldName: string): IObservable {
     const observable = new Observable();
