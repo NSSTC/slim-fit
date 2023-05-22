@@ -2,7 +2,10 @@
   "compilerOptions": {
     "alwaysStrict": true,
     "baseUrl": "./",
+    "declaration": true,
+    "declarationDir": "dist",
     "downlevelIteration": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
@@ -13,12 +16,17 @@
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
     "preserveConstEnums": true,
     "removeComments": true,
     "resolveJsonModule": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
+    "stripInternal": true,
+    "target": "ESNext",
     "types": []
   }
 }
