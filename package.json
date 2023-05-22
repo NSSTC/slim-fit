@@ -3,14 +3,28 @@
   "version": "0.3.1",
   "license": "MPL 2.0",
   "repository": "https://github.com/NSSTC/slim-fit.git",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "tslib": "^2.5.2"
+  },
   "devDependencies": {
-    "typescript": "^4.5.2"
+    "typescript": "^5.0.4"
   },
   "keywords": [
     "webcomponent",
     "component",
     "shadowdom",
     "html"
-  ]
+  ],
+  "scripts": {
+    "build": "tsc -P ."
+  },
+  "engines": {
+    "node": ">=14.16"
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false
 }
