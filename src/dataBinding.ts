@@ -65,7 +65,7 @@ export function readFromEvent<E extends keyof HTMLElementEventMap>(target: HTMLE
     return observable;
 }
 
-export function writeToElement<E extends keyof HTMLElementEventMap>(target: HTMLElement, fieldName: string): IObservable {
+export function writeToElement(target: HTMLElement, fieldName: string): IObservable {
     const observable = new Observable();
     let targetField = 'value';
 
