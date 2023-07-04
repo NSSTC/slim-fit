@@ -48,9 +48,7 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
 
     async clear(): Promise<void> {
         await this.cleanup();
-        while (this.root.firstChild) {
-            this.root.removeChild(this.root.firstChild);
-        }
+        this.root.replaceChildren();
     }
 
     connectedCallback(): void {
@@ -63,15 +61,18 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         this.cleanup();
     }
 
-    protected draw(html: string | Element | Node | DocumentFragment = '', css: string = ''): void {
-        const styleEle = document.createElement('style');
+    protected draw(html: string | Element | Node | DocumentFragment = '', css?: string | undefined): void {
         const contentFragment = typeof html == 'string'
             ? document.createRange().createContextualFragment(html)
             : html;
 
-        styleEle.innerHTML = css;
-        this.root.appendChild(styleEle);
-        this.root.appendChild(contentFragment);
+        if (css) {
+            const styleEle = document.createElement('style');
+            styleEle.innerHTML = css;
+            this.root.appendChild(styleEle);
+        }
+
+        this.root.replaceChildren(contentFragment);
     }
 
     protected fireError(error: Error): void {
@@ -105,18 +106,17 @@ export abstract class SlimFit extends HTMLElement implements ISlimFit {
         }
 
         this.isRendering = true;
-        await this.clear();
         await this.render();
         this.dirty = false;
         this.isRendering = false;
     }
 
-    $<T extends Element>(query: string): T | null { return this.queryInternalElement(query) }
+    $ = this.queryInternalElement;
     queryInternalElement<T extends Element>(query: string): T | null {
         return this.root.querySelector<T>(query);
     }
 
-    $$<T extends Element>(query: string): NodeListOf<T> { return this.queryInternalElements(query) }
+    $$ = this.queryInternalElements;
     queryInternalElements<T extends Element>(query: string): NodeListOf<T> {
         return this.root.querySelectorAll<T>(query);
     }
