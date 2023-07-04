@@ -1,6 +1,6 @@
 {
   "name": "@maruru/slim-fit",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "license": "MPL 2.0",
   "repository": "https://github.com/NSSTC/slim-fit.git",
   "main": "dist/index.js",
